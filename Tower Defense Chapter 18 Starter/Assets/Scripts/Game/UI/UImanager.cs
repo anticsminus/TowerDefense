@@ -13,6 +13,7 @@ public class UImanager : MonoBehaviour {
     public Text txtWave;
     public Text txtEscapedEnemies;
     //1
+    public GameObject towerInfoWindow;
     void Awake()
     {
         Instance = this;
@@ -39,5 +40,12 @@ public class UImanager : MonoBehaviour {
     public void Update()
     {
         UpdateTopBar();
+    }
+    public void ShowTowerInfoWindow(Tower tower)
+    {
+        towerInfoWindow.GetComponent<TowerInfoWindow>().tower = tower;
+        towerInfoWindow.SetActive(true);
+        UtilityMethods.MoveUiElementToWorldPosition(towerInfoWindow.
+        GetComponent<RectTransform>(), tower.transform.position);
     }
 }
