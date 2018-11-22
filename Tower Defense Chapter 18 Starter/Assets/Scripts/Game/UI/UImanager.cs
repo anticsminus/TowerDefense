@@ -4,37 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UImanager : MonoBehaviour {
-    //1
+
     public static UImanager Instance;
-    //2
-    public GameObject addTowerWindow;
-    //3
     public Text txtGold;
     public Text txtWave;
     public Text txtEscapedEnemies;
     public Transform enemyHealthBars;
+    public GameObject addTowerWindow;
     public GameObject enemyHealthBarPrefab;
     public GameObject centerWindow;
-    //1
+    public GameObject damageCanvas;
     public GameObject towerInfoWindow;
     public GameObject winGameWindow;
     public GameObject loseGameWindow;
     public GameObject blackBackground;
+
     void Awake()
     {
         Instance = this;
     }
-    //2
+
     private void UpdateTopBar()
     {
         txtGold.text = GameManager.Instance.gold.ToString();
-        txtWave.text = "Wave " + GameManager.Instance.waveNumber + " / " +
-        WaveManager.Instance.enemyWaves.Count;
-        txtEscapedEnemies.text = "Escaped Enemies " +
-        GameManager.Instance.escapedEnemies + " / " +
-        GameManager.Instance.maxAllowedEscapedEnemies;
+        txtWave.text = "Wave " + GameManager.Instance.waveNumber + " / " + WaveManager.Instance.enemyWaves.Count;
+        txtEscapedEnemies.text = "Escaped Enemies " + GameManager.Instance.escapedEnemies + " / " + GameManager.Instance.maxAllowedEscapedEnemies;
     }
-    //3
+
     public void ShowAddTowerWindow(GameObject towerSlot)
     {
         addTowerWindow.SetActive(true);
@@ -56,39 +52,63 @@ public class UImanager : MonoBehaviour {
     }
     public void ShowWinScreen()
     {
+        //win game screen appears
         blackBackground.SetActive(true);
         winGameWindow.SetActive(true);
     }
     public void ShowLoseScreen()
     {
+        //lose game screen appears
         blackBackground.SetActive(true);
         loseGameWindow.SetActive(true);
     }
-    //1
+
     public void CreateHealthBarForEnemy(Enemy enemy)
     {
-        //2
+        //Instantiate the healthbar prefab on each enemy
         GameObject healthBar = Instantiate(enemyHealthBarPrefab);
-        //3
+        //Transform the healthbar with the enemy
         healthBar.transform.SetParent(enemyHealthBars, false);
-        //4
         healthBar.GetComponent<EnemyHealthBar>().enemy = enemy;
     }
+
+    //This is for the center window, AKA as the wave window
     public void ShowCenterWindow(string text)
     {
+        //find the component with TxtWave text to display the correct wave
         centerWindow.transform.Find("TxtWave").GetComponent<Text>().
-        text = text;
-        StartCoroutine(EnableAndDisableCenterWindow());
+        text = text; // set text
+        StartCoroutine(EnableAndDisableCenterWindow()); // start flicker event
     }
-    //2
+
+    //flicker event for center/wave window
     private IEnumerator EnableAndDisableCenterWindow()
     {
+        //flicker three times
         for (int i = 0; i < 3; i++)
         {
             yield return new WaitForSeconds(.4f);
             centerWindow.SetActive(true);
             yield return new WaitForSeconds(.4f);
             centerWindow.SetActive(false);
+        }
+    }
+
+    //The following code is for the damage canvas
+    //It allows the player to visually see that enemies have passed through
+    public void ShowDamage()
+    {
+        StartCoroutine(DoDamageAnimation());
+    }
+    //Create flicker effect through code
+    private IEnumerator DoDamageAnimation()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(.1f);
+            damageCanvas.SetActive(true);
+            yield return new WaitForSeconds(.1f);
+            damageCanvas.SetActive(false);
         }
     }
 }

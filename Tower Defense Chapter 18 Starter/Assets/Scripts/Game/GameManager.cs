@@ -6,23 +6,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
     //1
     public static GameManager Instance;
-    //2
-    public int gold;
-    //3
-    public int waveNumber;
-    //4
-    public int escapedEnemies;
-    //5
-    public int maxAllowedEscapedEnemies = 5;
-    //6
-    public bool enemySpawningOver;
-    //7
+
     public AudioClip gameWinSound;
     public AudioClip gameLoseSound;
-    //8
+
+    public int gold;
+    public int waveNumber;
+    public int escapedEnemies;
+    public int maxAllowedEscapedEnemies = 5;
+    public bool enemySpawningOver;
     private bool gameOver;
-    // Use this for initialization
-    //1
+
     void Awake()
     {
         Instance = this;
@@ -63,6 +57,7 @@ public class GameManager : MonoBehaviour {
     public void OnEnemyEscape()
     {
         escapedEnemies++;
+        UImanager.Instance.ShowDamage();
         if (escapedEnemies == maxAllowedEscapedEnemies)
         {
             // Too many enemies escaped, you lose the game
