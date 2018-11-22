@@ -17,7 +17,9 @@ public class EnemyManager : MonoBehaviour {
     public void RegisterEnemy(Enemy enemy)
     {
         Enemies.Add(enemy);
+        UImanager.Instance.CreateHealthBarForEnemy(enemy);
     }
+
     //5
     public void UnRegister(Enemy enemy)
     {
@@ -26,8 +28,7 @@ public class EnemyManager : MonoBehaviour {
     //6
     public List<Enemy> GetEnemiesInRange(Vector3 position, float range)
     {
-        return Enemies.Where(enemy => Vector3.Distance(position,
-        enemy.transform.position) <= range).ToList();
+        return Enemies.Where(enemy => Vector3.Distance(position, enemy.transform.position) <= range).ToList();
     }
     //7
     public void DestroyAllEnemies()

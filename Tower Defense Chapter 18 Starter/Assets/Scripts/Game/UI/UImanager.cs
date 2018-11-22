@@ -12,8 +12,13 @@ public class UImanager : MonoBehaviour {
     public Text txtGold;
     public Text txtWave;
     public Text txtEscapedEnemies;
+    public Transform enemyHealthBars;
+    public GameObject enemyHealthBarPrefab;
     //1
     public GameObject towerInfoWindow;
+    public GameObject winGameWindow;
+    public GameObject loseGameWindow;
+    public GameObject blackBackground;
     void Awake()
     {
         Instance = this;
@@ -47,5 +52,25 @@ public class UImanager : MonoBehaviour {
         towerInfoWindow.SetActive(true);
         UtilityMethods.MoveUiElementToWorldPosition(towerInfoWindow.
         GetComponent<RectTransform>(), tower.transform.position);
+    }
+    public void ShowWinScreen()
+    {
+        blackBackground.SetActive(true);
+        winGameWindow.SetActive(true);
+    }
+    public void ShowLoseScreen()
+    {
+        blackBackground.SetActive(true);
+        loseGameWindow.SetActive(true);
+    }
+    //1
+    public void CreateHealthBarForEnemy(Enemy enemy)
+    {
+        //2
+        GameObject healthBar = Instantiate(enemyHealthBarPrefab);
+        //3
+        healthBar.transform.SetParent(enemyHealthBars, false);
+        //4
+        healthBar.GetComponent<EnemyHealthBar>().enemy = enemy;
     }
 }
