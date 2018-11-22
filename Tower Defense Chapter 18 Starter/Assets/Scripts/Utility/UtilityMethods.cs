@@ -56,4 +56,5 @@ public static class UtilityMethods
         return Quaternion.Slerp(currentRotation, targetRotation,
         Time.deltaTime * 10f);
     }
+
 }
